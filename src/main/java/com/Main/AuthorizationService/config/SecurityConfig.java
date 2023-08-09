@@ -26,22 +26,23 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeRequests(authorizeRequests ->
+                .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers(HttpMethod.POST, "/register").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout
-                                .permitAll()
-                );
+                                .requestMatchers(HttpMethod.POST, "/registration").permitAll()
+                                .anyRequest().authenticated())
+                .formLogin(withDefaults())
+                .logout(withDefaults());
+
 
         return http.build();
+
+        /*return http
+                .authorizeHttpRequests(customizer -> customizer
+                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().denyAll())
+
+                .build();*/
     }
 
 
