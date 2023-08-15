@@ -1,18 +1,19 @@
 package com.Main.AuthorizationService.controller;
 
-import com.Main.AuthorizationService.dto.UserDTO;
+import com.Main.AuthorizationService.dto.UserAuthenticationDTO;
+import com.Main.AuthorizationService.dto.UserResponseDTO;
 import com.Main.AuthorizationService.dto.UserRegistrationDTO;
 import com.Main.AuthorizationService.service.UserService;
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/registration")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class UserController {
     private UserService userService;
 
@@ -21,12 +22,18 @@ public class UserController {
         this.userService = userService;
     }
 
-
-
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO registerUser(@RequestBody UserRegistrationDTO dto) {
+    @PostMapping("/register")
+    public UserResponseDTO registerUser(@RequestBody UserRegistrationDTO dto) {
         log.info("Try to register user: {}", dto.getLogin());
         return userService.registerUser(dto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public UserResponseDTO authUser(@RequestBody UserAuthenticationDTO dto) {
+        log.info("Try to login: {}", dto.getLogin());
+        return userService.authenticateUser(dto);
     }
 
 }

@@ -1,16 +1,17 @@
 package com.Main.AuthorizationService.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+@Builder
+public class UserResponseDTO {
     private Long id;
     private String login;
     private String role;
+    private String token;
 }

@@ -1,4 +1,4 @@
-package com.Main.AuthorizationService.service.impl;
+package com.Main.AuthorizationService.service;
 
 import com.Main.AuthorizationService.exeption.UserNotFoundException;
 import com.Main.AuthorizationService.model.User;
@@ -17,10 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
     @Override
-    public UserDetails loadUserByUsername(String login) throws UserNotFoundException {
+    public User loadUserByUsername(String login) throws UserNotFoundException {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + login));
-
-        return (UserDetails) user;
+        return user;
     }
 }
