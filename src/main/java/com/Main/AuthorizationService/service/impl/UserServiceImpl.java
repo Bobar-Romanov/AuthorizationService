@@ -26,14 +26,13 @@ import org.springframework.validation.annotation.Validated;
 public class UserServiceImpl implements UserService {
 
     private final CustomUserDetailsService userDetailsService;
-
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
 
 
     @Override
-    public UserResponseDTO registerUser(@Valid UserRegistrationDTO dto) {
+    public UserResponseDTO registerUser(UserRegistrationDTO dto) {
         if (userRepository.existsByLogin(dto.getLogin())) {
             log.info("User already exist: ", dto.getLogin());
             throw new UserAlreadyExistsException("User already exist: " + dto.getLogin());
@@ -53,7 +52,9 @@ public class UserServiceImpl implements UserService {
                 )
         );
         User user = userDetailsService.loadUserByUsername(dto.getLogin());
+
+        UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(user);
         log.info("Authenticate: {}", user.getLogin());
-        return userMapper.toUserResponseDTO(user);
+        return userResponseDTO;
     }
 }

@@ -42,7 +42,6 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "role")
-    @Size(max = 255)
     @Enumerated(EnumType.STRING)
     private Role role;
 

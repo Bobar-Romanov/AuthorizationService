@@ -21,7 +21,7 @@ public class UserMapper {
     public User toUser(UserRegistrationDTO userRegistrationDTO) {
         User user =  modelMapper.map(userRegistrationDTO, User.class);
         user.setRole(Role.USER);
-        //user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         return user;
     }
 
