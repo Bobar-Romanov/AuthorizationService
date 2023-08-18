@@ -1,4 +1,4 @@
-package com.Main.AuthorizationService.exeption;
+package com.Main.AuthorizationService.exception;
 
 public class UserNotFoundException extends RuntimeException{
     public  UserNotFoundException(String message) {

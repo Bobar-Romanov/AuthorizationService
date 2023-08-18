@@ -1,7 +1,8 @@
 package com.Main.AuthorizationService.controller;
 
-import com.Main.AuthorizationService.exeption.UserAlreadyExistsException;
-import com.Main.AuthorizationService.exeption.UserNotFoundException;
+import com.Main.AuthorizationService.exception.JwtAuthenticationTokenNotValidException;
+import com.Main.AuthorizationService.exception.UserAlreadyExistsException;
+import com.Main.AuthorizationService.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,13 @@ public class RestExceptionHandler {
         response.put("error", "Username already exists");
         response.put("message", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(JwtAuthenticationTokenNotValidException.class)
+    protected ResponseEntity<Object> handleJwtAuthenticationTokenNotValid(JwtAuthenticationTokenNotValidException e){
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "JWT Token not valid");
+        response.put("message", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 

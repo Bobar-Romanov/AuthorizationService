@@ -3,13 +3,17 @@ package com.Main.AuthorizationService.controller;
 import com.Main.AuthorizationService.dto.UserAuthenticationDTO;
 import com.Main.AuthorizationService.dto.UserResponseDTO;
 import com.Main.AuthorizationService.dto.UserRegistrationDTO;
+import com.Main.AuthorizationService.service.JwtService;
 import com.Main.AuthorizationService.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -18,9 +22,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private UserService userService;
 
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,4 +43,10 @@ public class UserController {
         return userService.authenticateUser(dto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/check-token")
+    public List<GrantedAuthority> checkToken(@RequestParam String token, @RequestParam String login) {
+        log.info("Try to check: {}", login);
+        return  userService.getUserAuthorities(token, login);
+    }
 }
