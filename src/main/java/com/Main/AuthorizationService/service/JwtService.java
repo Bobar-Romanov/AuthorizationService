@@ -4,20 +4,28 @@ import com.Main.AuthorizationService.exception.JwtAuthenticationTokenNotValidExc
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class JwtService {
+
+    private final JwtDecoder jwtDecoder;
 
     private static final String SECRET_KEY = "8C95D8322C8C8B7B11814CBA118A2C90858A73883EBEE0F3BE94E591C47851A3";
 
@@ -45,10 +53,7 @@ public class JwtService {
         final  String login = extractUserLogin(token);
         return (login.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-    public boolean isTokenValid(String token, String login){
-        final  String tokenLogin = extractUserLogin(token);
-        return (login.equals(tokenLogin) && !isTokenExpired(token));
-    }
+
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
@@ -76,6 +81,7 @@ public class JwtService {
         byte[] keyBytes = DatatypeConverter.parseHexBinary(SECRET_KEY);
         return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
+
 
 
 }

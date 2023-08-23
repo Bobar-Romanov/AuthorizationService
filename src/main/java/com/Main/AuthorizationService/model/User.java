@@ -23,7 +23,7 @@ public class User implements UserDetails {
     public User( String login, String password, Role role) {
         this.login = login;
         this.password = password;
-        this.role = Role.USER;
+        this.role = Role.ROLE_USER;
     }
 
     @Id

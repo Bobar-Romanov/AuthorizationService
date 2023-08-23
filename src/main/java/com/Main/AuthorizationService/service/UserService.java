@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserService {
     UserResponseDTO registerUser(UserRegistrationDTO dto);
     UserResponseDTO authenticateUser(UserAuthenticationDTO dto);
-    List<GrantedAuthority> getUserAuthorities(String token, String login);
+    List<GrantedAuthority> getUserAuthorities(String token);
 }

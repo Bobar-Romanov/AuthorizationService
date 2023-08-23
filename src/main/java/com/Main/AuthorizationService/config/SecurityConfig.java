@@ -10,7 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.Main.AuthorizationService.utils.Role.ADMIN;
+
+import static com.Main.AuthorizationService.utils.Role.ROLE_ADMIN;
 
 
 @Configuration
@@ -27,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/test/admin")
-                .hasAuthority("ADMIN")
+                .hasRole("ADMIN")
                 .requestMatchers("/api/auth/**")
                 .permitAll()
                 .anyRequest()

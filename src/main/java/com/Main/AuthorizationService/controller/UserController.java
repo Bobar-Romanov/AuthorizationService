@@ -45,8 +45,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/check-token")
-    public List<GrantedAuthority> checkToken(@RequestParam String token, @RequestParam String login) {
-        log.info("Try to check: {}", login);
-        return  userService.getUserAuthorities(token, login);
+    public List<GrantedAuthority> checkToken(@RequestParam String token) {
+        log.info("Try to check: {}", token);
+        return  userService.getUserAuthorities(token);
     }
 }

@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponseDTO(user);
     }
 
+
     @Override
     public UserResponseDTO authenticateUser(UserAuthenticationDTO dto) {
         authenticationManager.authenticate(
@@ -63,24 +64,23 @@ public class UserServiceImpl implements UserService {
         return userResponseDTO;
     }
 
-
     public List<GrantedAuthority> getAuthorityByUserLogin(String login) {
         User user = userDetailsService.loadUserByUsername(login);
         return (List<GrantedAuthority>) user.getAuthorities();
     }
 
 
+
+
     @Override
-    public List<GrantedAuthority> getUserAuthorities(String token, String login) {
-        if(!jwtService.isTokenValid(token,login)){
-            throw new JwtAuthenticationTokenNotValidException("Token not valid: " + login);
-        }
-        Collection<? extends GrantedAuthority> authorities = userDetailsService.loadUserByUsername(login).getAuthorities();
+    public List<GrantedAuthority> getUserAuthorities(String token) {
+        String login = jwtService.extractUserLogin(token);
+        List<GrantedAuthority> authorities = getAuthorityByUserLogin(login);
         log.info("authorities: {}", authorities.toString());
-        if (authorities != null) {
-            return (List<GrantedAuthority>) authorities;
-        } else {
+        if (authorities.isEmpty()) {
             return Collections.emptyList();
+        } else {
+            return authorities;
         }
     }
 }
